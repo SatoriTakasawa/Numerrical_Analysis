@@ -1,0 +1,54 @@
+#include<stdio.h>
+
+int main(void){
+    FILE *file;
+    int count[30] = {0}, i, tmp;
+    char str, data, m[26] ={'a'}, M[26] = {'A'}, komozi = 'a', oomozi = 'A';
+   
+    for(i = 0; i <= 26; i++){
+        m[i] = komozi;
+	M[i] = oomozi;
+	komozi++;
+	oomozi++;
+    }
+    m[26] = ' ';
+    M[26] = ' '; 
+
+    file = fopen("newfile.txt", "r");
+
+    if(file == NULL){
+        printf("ファイルを開けません\n");
+	return -1;
+    }
+
+/*アルファベットの数------------------------------------------------------------------------*/
+    while((str = getc(file)) != EOF){
+        if('a' <= str <= 'z' || 'A' <= str <= 'Z' || str == ' '){
+     	    for(i = 0; i <= 26; i++){
+                if(str == m[i] || str == M[i]){
+                    count[i]++;
+                } 
+      	    } 	
+    	}
+    }
+/*頻度の高い順に出力------------------------------------------------------------------------*/
+    printf("文字を頻度の高い順に出力します。\n");
+        for(i = 0; i <= 26; i++){
+            for(int j = i+1; j <= 26; j++){
+                if(count[i] < count[j]){
+                    tmp = count[i];
+                    count[i] = count[j];
+                    count[j] = tmp;
+                    data = m[i];
+                    m[i] = m[j];
+                    m[j] = data;   
+                }  
+            }
+        }
+        for(i = 0; i <= 26; i++){
+            printf("%c:%d\n ", m[i], count[i]);
+        }
+
+    fclose(file);
+    return 0;
+}
