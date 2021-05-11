@@ -1,0 +1,37 @@
+
+#include <stdio.h>
+#include <stdio.h>
+#include <stdlib.h>  
+#include <string.h>
+#include <ctype.h>
+
+int main(void)
+{
+    FILE *file1;
+    FILE *file2;
+    int c;
+    
+    file1 = fopen("file.txt", "r");
+    file2 = fopen("newfile.txt", "w");
+
+    if(file1 == NULL){
+        printf("ファイルを開けません\n");
+        return -1;
+    }
+    
+    while((c = getc(file1)) != EOF){
+        if(isalpha(c)) {          
+            fprintf(file2,"%c",c);
+    	}else if(c == '\n') {    
+            fprintf(file2,"\n");
+    	}else{
+            fprintf(file2," ");    
+    	} 
+    }
+      
+    printf("newfile.txtに挿入\n");
+	 
+    fclose(file1);
+    fclose(file2);           
+}
+
