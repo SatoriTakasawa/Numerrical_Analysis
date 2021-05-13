@@ -1,55 +1,39 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
+#include<stdio.h>
+#include<stdlib.h>
+#include<math.h>
 
-double f(double x){
+double f(double x)
+{
   return x*x-3;
 }
 
-double d_f(double x){
+double d_f(double x)
+{
   return 2*x;
 }
 
 int main(void){
- FILE *outputfile;
- int n_max;
-// FILE *data, *gp;
-// char *data_file;
- int n =0;
- double x,eps,del;
+  double x, del, eps = 0.0000001;
+  int n = 0, n_max ;
 
-outputfile = fopen("graph.txt", "w");
-if(outputfile == NULL){
-printf("cannot open\n");
-//data_file="out.dat";
-//data = fopen(data_file,"w");
-}
+  printf("初期値を入力してください。\nx:");
+  scanf("%lf", &x);
+  printf("最大繰り返し回数を入力してください。\nn_max:");
+  scanf("%d",&n_max);
+  
+  do{
 
-printf("初期値x,小さい数eps,最大繰り返し回数n_maxを入力\n");
-printf("x =");
-scanf("%lf", &x);
-fprintf(outputfile,"%.lf 0\n",x);
-printf("eps = ");
-scanf("%lf",&eps);
-printf("n_max = ");
-scanf("%d", &n_max);
+    del = -f(x) / d_f(x);
+    x =x + del;
+    printf("[round: %d],x = %.10lf\n",n+1,x);
+    n++;
+  }while(fabs(del) > eps && n <= n_max);
+  
+  if(n == n_max){
+   printf("失敗　解が見つかりませんでした。\n");
+  }else{
+  printf("解は %.10f\n試行回数は%d回です\n",x,n);
+  } 
 
-do{
-  del = -f(x) / d_f(x);
-  x = x + del;
-  n++;
-  printf("[round: %d], x = %.10lf\n", n, x);
-  //fprintf
-  fprintf(outputfile, "%.10lf 0\n",x);
- // fprintf(data_file, "%.10lf 0\n",x);   
-}while(fabs(del) > eps && n <= n_max);
-
-if(n == n_max){
-  printf("失敗\n");
-}else{
-  printf("近似値は%.10lf\n試行回数は%d回\n",x,n);
-}
-
-return 0;
-
+  return 0;
 }
